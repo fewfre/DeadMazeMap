@@ -28,7 +28,7 @@ export default class ConstantsApp
 		ConstantsApp.STAGE_CENTER_Y = Global.canvas.height*0.5;
 	}
 	
-	static readonly VIGNETTE_BASE : string = "https://vignette.wikia.nocookie.net/transformice/images";
+	static readonly VIGNETTE_BASE : string = "https://vignette.wikia.nocookie.net/deadmaze/images";
 	
 	static readonly assetPacks : { [packname:string]:(string|{ id:string, src:string })[]; } = {
 		preload: [
@@ -43,7 +43,7 @@ export default class ConstantsApp
 			{ id:"mall_icon", src:"http://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/11.png" },
 		],
 		map: [
-			{ id:"home_btn", src:ConstantsApp.VIGNETTE_BASE+"/4/41/Menu_icon.png/revision/latest/scale-to-width-down/75?cb=20151223164027&t=.png" },
+			{ id:"home_btn", src:"https://vignette.wikia.nocookie.net/transformice/images/4/41/Menu_icon.png/revision/latest/scale-to-width-down/75?cb=20151223164027&t=.png" },
 		],
 	};
 	
