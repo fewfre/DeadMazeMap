@@ -1,10 +1,14 @@
 import Sprite from "./Sprite";
 
+interface CustomSpriteProp extends SpriteProp {
+	draw : (ctx:CanvasRenderingContext2D) => void,
+}
+
 export default class CustomSprite extends Sprite
 {
 	myDraw : (ctx:CanvasRenderingContext2D) => void;
 	
-	constructor(pProp) {
+	constructor(pProp:CustomSpriteProp) {
 		super(pProp);
 		this.myDraw = pProp.draw;
 	}

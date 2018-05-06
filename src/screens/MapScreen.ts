@@ -35,7 +35,9 @@ export default class MapScreen extends ScreenBase
 	
 	protected _buildScreen() : void {
 		this.data = ConstantsApp.screenData;
-		this.map = this.spriteManager.add(new ImageSprite({ asset:this.data.mapAsset, origin:0, x:ConstantsApp.STAGE_CENTER_X-this.data.spawnX, y:ConstantsApp.STAGE_CENTER_Y-this.data.spawnY, fontStyle:"bold" }));
+		this.spriteManager.add(new FillSprite({ color:0, width:ConstantsApp.STAGE_WIDTH, height:ConstantsApp.STAGE_HEIGHT, origin:0 }));
+		
+		this.map = this.spriteManager.add(new ImageSprite({ asset:this.data.mapAsset, origin:0, x:ConstantsApp.STAGE_CENTER_X-this.data.spawnX, y:ConstantsApp.STAGE_CENTER_Y-this.data.spawnY }));
 		this._clampMapToSides();
 		
 		this.spriteManager.add(new FillSprite({ color:0, width:90, height:35, alpha:0.5, originX:1, originY:0, x:ConstantsApp.STAGE_WIDTH, y:0 }));

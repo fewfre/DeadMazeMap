@@ -47,5 +47,12 @@ export default class AssetManager
 			tImage = null;
 			if(this._loadingCount == 0) { if(pCallback) pCallback(); }
 		};
+		tImage.onerror = (e)=>{
+			console.error("[AssetManager](_loadImage) Failed to load asset: "+tFileID+": "+tFilePath);
+			setTimeout(()=>{
+				this._loadingCount--;
+				if(this._loadingCount == 0) { if(pCallback) pCallback(); }
+			});
+		};
 	}
 }

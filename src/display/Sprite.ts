@@ -16,7 +16,7 @@ export default class Sprite
 	originX : number;
 	originY : number;
 	
-	constructor(pProp) {
+	constructor(pProp:SpriteProp) {
 		this.children = [];
 		this.parent = null;
 		this.doDelete = false;

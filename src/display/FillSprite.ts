@@ -1,12 +1,18 @@
 import Sprite from "./Sprite";
 
+interface FillSpriteProp extends SpriteProp {
+	color : any,
+	width : number,
+	height : number,
+}
+
 export default class FillSprite extends Sprite
 {
 	color : any;
 	sizeX : number;
 	sizeY : number;
 	
-	constructor(pProp) {
+	constructor(pProp:FillSpriteProp) {
 		super(pProp);
 		this.color = pProp.color;
 		this.sizeX = pProp.width;

@@ -1,11 +1,15 @@
 import Sprite from "./Sprite";
 import Global from "../utils/Global";
 
+interface ImageSpriteProp extends SpriteProp {
+	asset : string,
+}
+
 export default class ImageSprite extends Sprite
 {
 	protected file : any;
 	
-	constructor(pProp) {
+	constructor(pProp:ImageSpriteProp) {
 		super(pProp);
 		this.file = Global.assets.file(pProp.asset);
 	}

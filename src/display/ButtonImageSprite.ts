@@ -2,12 +2,16 @@ import ImageSprite from "./ImageSprite";
 import Mouse from "../utils/Mouse";
 import FewfEvent from "../utils/FewfEvent";
 
+interface ButtonImageSpriteProp extends SpriteProp {
+	asset : string,
+}
+
 export default class ButtonImageSprite extends ImageSprite
 {
 	protected _flagEnabled : boolean;
 	onClick : FewfEvent;
 	
-	constructor(pProp) {
+	constructor(pProp:ButtonImageSpriteProp) {
 		super(pProp);
 		
 		this._flagEnabled = true;

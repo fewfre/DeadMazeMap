@@ -1,5 +1,13 @@
 import Sprite from "./Sprite";
 
+interface TextSpriteProp extends SpriteProp {
+	text ?: string,
+	color ?: any,
+	fontName ?: string,
+	fontSize ?: number,
+	fontStyle ?: string,
+}
+
 export default class TextSprite extends Sprite
 {
 	text : string;
@@ -11,7 +19,7 @@ export default class TextSprite extends Sprite
 	sizeX : number;
 	sizeY : number;
 	
-	constructor(pProp) {
+	constructor(pProp:TextSpriteProp) {
 		super(pProp);
 		this.text = pProp.text || "";
 		this.color = pProp.color || "white";
