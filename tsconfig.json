@@ -1,0 +1,15 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"noImplicitAny": false,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"target": "es5"
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"filesGlob": [
+		"src/js/*.ts"
+	]
+}
