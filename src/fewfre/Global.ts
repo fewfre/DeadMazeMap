@@ -1,6 +1,5 @@
-import AssetManager from "./AssetManager";
-import SpriteManager from "../display/SpriteManager";
-import ScreenManager from "../screens/ScreenManager";
+import AssetManager from "./utils/AssetManager";
+import ScreenManager from "./screens/ScreenManager";
 
 export default class Global
 {

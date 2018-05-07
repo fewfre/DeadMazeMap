@@ -1,6 +1,6 @@
 import ImageSprite from "./ImageSprite";
-import Mouse from "../utils/Mouse";
 import FewfEvent from "../utils/FewfEvent";
+import Mouse from "../input/Mouse";
 
 interface ButtonImageSpriteProp extends SpriteProp {
 	asset : string,

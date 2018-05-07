@@ -1,6 +1,4 @@
 import ScreenBase from "./ScreenBase";
-import ConstantsApp from "../app/ConstantsApp";
-import Global from "../utils/Global";
 
 export default class ScreenManager
 {

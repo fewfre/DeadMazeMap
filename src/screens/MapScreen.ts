@@ -1,15 +1,15 @@
-import ImageSprite from "../display/ImageSprite";
-import Mouse from "../utils/Mouse";
-import TextSprite from "../display/TextSprite";
-import Utils from "../utils/Utils";
-import FillSprite from "../display/FillSprite";
 import ConstantsApp from "../app/ConstantsApp";
-import ScreenBase from "./ScreenBase";
-import Global from "../utils/Global";
-import CustomSprite from "../display/CustomSprite";
-import ButtonImageSprite from "../display/ButtonImageSprite";
 import MapSelectionScreen from "./MapSelectionScreen";
 import LoadingScreen from "./LoadingScreen";
+import ScreenBase from "../fewfre/screens/ScreenBase";
+import ImageSprite from "../fewfre/display/ImageSprite";
+import TextSprite from "../fewfre/display/TextSprite";
+import FillSprite from "../fewfre/display/FillSprite";
+import ButtonImageSprite from "../fewfre/display/ButtonImageSprite";
+import Global from "../fewfre/Global";
+import Utils from "../fewfre/utils/Utils";
+import CustomSprite from "../fewfre/display/CustomSprite";
+import Mouse from "../fewfre/input/Mouse";
 
 export default class MapScreen extends ScreenBase
 {

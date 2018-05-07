@@ -1,5 +1,5 @@
 import Sprite from "./Sprite";
-import Global from "../utils/Global";
+import Global from "../Global";
 
 export default class SpriteManager
 {

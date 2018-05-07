@@ -1,10 +1,10 @@
-import Global from "./utils/Global";
 import ConstantsApp from "./app/ConstantsApp";
 import LoadingScreen from "./screens/LoadingScreen";
 import MapSelectionScreen from "./screens/MapSelectionScreen";
-import Mouse from "./utils/Mouse";
-import Utils from "./utils/Utils";
 import MapScreen from "./screens/MapScreen";
+import Global from "./fewfre/Global";
+import Mouse from "./fewfre/input/Mouse";
+import Utils from "./fewfre/utils/Utils";
 
 //######################################
 // Main (instance class) - Start script and store values.

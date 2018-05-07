@@ -1,5 +1,4 @@
 import SpriteManager from "../display/SpriteManager";
-import Global from "../utils/Global";
 
 export default class ScreenBase
 {

@@ -1,7 +1,6 @@
-import ScreenBase from "../screens/ScreenBase";
-import Global from "../utils/Global";
 import MapScreen from "../screens/MapScreen";
-import Utils from "../utils/Utils";
+import Global from "../fewfre/Global";
+import Utils from "../fewfre/utils/Utils";
 
 export default class ConstantsApp
 {

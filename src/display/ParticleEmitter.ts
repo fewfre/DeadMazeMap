@@ -1,4 +1,4 @@
-import Sprite from "./Sprite";
+import Sprite from "../fewfre/display/Sprite";
 
 export default class ParticleEmitter extends Sprite
 {

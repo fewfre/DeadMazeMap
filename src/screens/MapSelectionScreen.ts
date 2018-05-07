@@ -1,11 +1,11 @@
 import MapScreen from "./MapScreen";
-import FillSprite from "../display/FillSprite";
-import ButtonImageSprite from "../display/ButtonImageSprite";
-import Global from "../utils/Global";
 import ConstantsApp from "../app/ConstantsApp";
-import ScreenBase from "./ScreenBase";
 import LoadingScreen from "./LoadingScreen";
-import TextSprite from "../display/TextSprite";
+import ButtonImageSprite from "../fewfre/display/ButtonImageSprite";
+import ScreenBase from "../fewfre/screens/ScreenBase";
+import FillSprite from "../fewfre/display/FillSprite";
+import TextSprite from "../fewfre/display/TextSprite";
+import Global from "../fewfre/Global";
 
 export default class MapSelectionScreen extends ScreenBase
 {
@@ -13,6 +13,7 @@ export default class MapSelectionScreen extends ScreenBase
 	
 	protected _buildScreen() : void {
 		this._buttons = [];
+		this.spriteManager.add(new FillSprite({ color:"darkgreen", width:ConstantsApp.STAGE_WIDTH*0.8+6, height:ConstantsApp.STAGE_HEIGHT*0.8+6, x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y }));
 		let tray = this.spriteManager.add(new FillSprite({ color:"green", width:ConstantsApp.STAGE_WIDTH*0.8, height:ConstantsApp.STAGE_HEIGHT*0.8, x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y }));
 		let tLocations = [ "sac", "bay", "santa", "mazon", "mall", "walker", "museum", "highway", "mesa" ], tSpacing = 55, tBtn;
 		for(var i = 0; i < tLocations.length; i++) {

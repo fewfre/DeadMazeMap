@@ -1,5 +1,5 @@
 import Sprite from "./Sprite";
-import Global from "../utils/Global";
+import Global from "../Global";
 
 interface ImageSpriteProp extends SpriteProp {
 	asset : string,

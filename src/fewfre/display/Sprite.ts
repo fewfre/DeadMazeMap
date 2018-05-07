@@ -1,4 +1,4 @@
-import ConstantsApp from "../app/ConstantsApp";
+import ConstantsApp from "../../app/ConstantsApp";
 
 export default class Sprite
 {

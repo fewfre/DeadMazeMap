@@ -1,7 +1,7 @@
-import FewfEvent from "./FewfEvent";
-import Utils from "./Utils";
-import Global from "./Global";
-import ConstantsApp from "../app/ConstantsApp";
+import FewfEvent from "../utils/FewfEvent";
+import Global from "../Global";
+import Utils from "../utils/Utils";
+import ConstantsApp from "../../app/ConstantsApp";
 
 export default class Mouse
 {

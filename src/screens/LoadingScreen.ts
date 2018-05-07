@@ -1,11 +1,12 @@
-import Sprite from "../display/Sprite";
-import FillSprite from "../display/FillSprite";
 import ConstantsApp from "../app/ConstantsApp";
-import ScreenBase from "./ScreenBase";
-import CustomSprite from "../display/CustomSprite";
 import ParticleEmitter from "../display/ParticleEmitter";
-import Mouse from "../utils/Mouse";
-import TextSprite from "../display/TextSprite";
+import ScreenBase from "../fewfre/screens/ScreenBase";
+import Sprite from "../fewfre/display/Sprite";
+import FillSprite from "../fewfre/display/FillSprite";
+import CustomSprite from "../fewfre/display/CustomSprite";
+import TextSprite from "../fewfre/display/TextSprite";
+import Mouse from "../fewfre/input/Mouse";
+import GearSprite from "../display/GearSprite";
 
 export default class LoadingScreen extends ScreenBase
 {
@@ -30,38 +31,7 @@ export default class LoadingScreen extends ScreenBase
 		this._spinnerParticleTray.add(new ParticleEmitter({ x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y, color:"grey", vx:250, vy:25, spawnSpeed:0.05, alpha:0.5, rotation:90 }));
 		this._spinnerParticleTray.add(new ParticleEmitter({ x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y, color:"grey", vx:250, vy:25, spawnSpeed:0.05, alpha:0.5, rotation:135 }));
 		
-		this._spinner = this.spriteManager.add(new CustomSprite({ x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y, draw:(ctx)=>{
-			let strokeWidth = 3;
-			
-			ctx.beginPath();
-			ctx.arc(0, 0, 35, 0, 2 * Math.PI, false);
-			ctx.lineWidth = 20;
-			ctx.strokeStyle = 'darkgrey';
-			ctx.stroke();
-			
-			ctx.beginPath();
-			ctx.arc(0, 0, 35, 0, 2 * Math.PI, false);
-			ctx.lineWidth = 20-(strokeWidth*2);
-			ctx.strokeStyle = 'grey';
-			ctx.stroke();
-			
-			// Now draw pegs of gear
-			ctx.lineWidth = strokeWidth;
-			ctx.strokeStyle="darkgrey";
-			ctx.fillStyle="grey";
-			
-			let size = 20, sizeH = size*0.5, xx = 45 - strokeWidth*1.5;
-			for(var i = 0; i < 8; i++) {
-				ctx.rotate(45*i*ConstantsApp.DEG2RAD);
-				ctx.beginPath();
-				ctx.moveTo(xx,-sizeH);
-				ctx.lineTo(xx+size,-sizeH);
-				ctx.lineTo(xx+size,sizeH);
-				ctx.lineTo(xx,sizeH);
-				ctx.fill();
-				ctx.stroke();
-			}
-		} }));
+		this._spinner = this.spriteManager.add(new GearSprite({ x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y }));
 		this.spriteManager.add(new TextSprite({ text:"Loading...", x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y + 115, fontSize:25 }));
 	}
 	dispose() : void {
