@@ -25,7 +25,7 @@ class Main
 		Global.screenManager.pushAndReplace(LoadingScreen);
 		
 		// Preload
-		if(Utils.getUrlParameter("z") && Utils.getUrlParameter("c")) {
+		if(Utils.getUrlParameter("z")) {// && Utils.getUrlParameter("c")
 			ConstantsApp.showUrlParams = true;
 			let tZoneData = ConstantsApp.mapDatas[ Utils.getUrlParameter("z") ];
 			Global.assets.load(tZoneData.loadList.concat( ConstantsApp.assetPacks["map"] ), ()=>{
@@ -38,6 +38,7 @@ class Main
 		
 		// Update
 		window.requestAnimationFrame(this.update.bind(this));
+		window.addEventListener("resize", this._onResize.bind(this), true);
 	}
 	
 	private _onInitialLoad() {
@@ -52,6 +53,14 @@ class Main
 		Global.context.clearRect(0, 0, Global.canvas.width, Global.canvas.height);
 		Global.screenManager.update(dt);
 		window.requestAnimationFrame(this.update.bind(this));
+	}
+	
+	private _onResize(e) {
+		console.log(document.body.clientWidth, document.body.clientHeight);
+		Global.canvas.width = document.body.clientWidth; Global.canvas.height = document.body.clientHeight;
+		let tOldWidth = ConstantsApp.STAGE_WIDTH, tOldHeight = ConstantsApp.STAGE_HEIGHT;
+		ConstantsApp.init();
+		ConstantsApp.onResize.dispatch(tOldWidth, tOldHeight);
 	}
 }
 // We want Main to be an instance class.

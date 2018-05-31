@@ -20,6 +20,10 @@ export default class AssetManager
 		}
 	}
 	
+	unload(pArray:string[], pCallback?:()=>void) : void {
+		// Todo
+	}
+	
 	private _loadImage(pSource, pCallback:()=>void) : void {
 		let tFileID = null, tFilePath = pSource, tName, tType;
 		if(pSource.id) { tFileID = pSource.id; tFilePath = pSource.src; }

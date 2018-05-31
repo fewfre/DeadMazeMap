@@ -24,7 +24,7 @@ export default class MapSelectionScreen extends ScreenBase
 		
 		tray.add(new TextSprite({ text:"Dead Maze Map Explorer", y:-tray.height*0.5+75, fontSize:35 }));
 		
-		this.spriteManager.add(new TextSprite({ text:"V"+ConstantsApp.VERSION, originX:1, originY:1, x:ConstantsApp.STAGE_WIDTH-15, y:ConstantsApp.STAGE_HEIGHT-7.5 }));
+		this.spriteManager.add(new TextSprite({ text:"V"+ConstantsApp.VERSION, originX:1, originY:0.5, x:ConstantsApp.STAGE_WIDTH-15, y:ConstantsApp.STAGE_HEIGHT-30 }));
 		this._buttons.push(this.spriteManager.add(new ButtonImageSprite({ asset:"github", x:ConstantsApp.STAGE_WIDTH-80, y:ConstantsApp.STAGE_HEIGHT-30 })));
 		this._buttons[this._buttons.length-1].onClick.add(()=>{ window.open(ConstantsApp.SOURCE_URL, '_blank'); });
 	}

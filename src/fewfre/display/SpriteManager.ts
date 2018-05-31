@@ -22,6 +22,14 @@ export default class SpriteManager
 		return pSprite;
 	}
 	
+	remove<T extends Sprite>(pSprite:T) : T {
+		let tIndex = this.sprites.indexOf(pSprite);
+		if(tIndex > -1) {
+			this.sprites.splice(tIndex, 1);
+		}
+		return pSprite;
+	}
+	
 	clear() : void {
 		for(var i = 0; i < this.sprites.length; i++) {
 			this.sprites[i].doDelete = true;

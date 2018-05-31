@@ -1,4 +1,5 @@
 interface MapData {
+	name:string,
 	mapAsset:string,
 	iconAsset:string,
 	spawnX:number,

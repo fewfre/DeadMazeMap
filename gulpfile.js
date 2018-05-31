@@ -3,7 +3,6 @@ var concat = require('gulp-concat');
 var insert = require('gulp-insert');
 var replace = require('gulp-replace');
 // var jshint = require('gulp-jshint');
-var less = require('gulp-less');
 var uglify = require('gulp-uglify');
 var path = require('path');
 var browserify = require("browserify");

@@ -11,11 +11,18 @@ export default class ButtonImageSprite extends ImageSprite
 	protected _flagEnabled : boolean;
 	onClick : FewfEvent;
 	
+	actualScaleX : number;
+	actualScaleY : number;
+	
 	constructor(pProp:ButtonImageSpriteProp) {
 		super(pProp);
 		
 		this._flagEnabled = true;
 		this.onClick = new FewfEvent();
+		
+		this.actualScaleX = this.scaleX;
+		this.actualScaleY = this.scaleY;
+		
 		this._addEventListeners();
 	}
 	

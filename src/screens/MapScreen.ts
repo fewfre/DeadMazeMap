@@ -10,6 +10,9 @@ import Global from "../fewfre/Global";
 import Utils from "../fewfre/utils/Utils";
 import CustomSprite from "../fewfre/display/CustomSprite";
 import Mouse from "../fewfre/input/Mouse";
+import Sprite from "../fewfre/display/Sprite";
+import CircleMarker from "../display/CircleMarker";
+import Vector from "../fewfre/math/Vector";
 
 export default class MapScreen extends ScreenBase
 {
@@ -24,70 +27,57 @@ export default class MapScreen extends ScreenBase
 	map : ImageSprite;
 	coords : TextSprite;
 	tileDiag : number;
+	marks : CircleMarker[];
+	draggingMark : CircleMarker;
 	
 	mouseDownX : number;
 	mouseDownY : number;
 	mapDragX : number;
 	mapDragY : number;
 	
+	curTileX : number;
+	curTileY : number;
+	
+	sidebar : FillSprite;
+	resizeFunction : any;
+	
 	private _onMouseDownBinded : any;
 	private _onMouseMoveBinded : any;
 	
 	protected _buildScreen() : void {
 		this.data = ConstantsApp.screenData;
+		this.marks = [];
+		
+		this.curTileX = 0;
+		this.curTileY = 0;
+		
 		this.spriteManager.add(new FillSprite({ color:0, width:ConstantsApp.STAGE_WIDTH, height:ConstantsApp.STAGE_HEIGHT, origin:0 }));
 		
 		this.map = this.spriteManager.add(new ImageSprite({ asset:this.data.mapAsset, origin:0, x:ConstantsApp.STAGE_CENTER_X-this.data.spawnX, y:ConstantsApp.STAGE_CENTER_Y-this.data.spawnY }));
 		this._clampMapToSides();
 		
-		this.spriteManager.add(new FillSprite({ color:0, width:90, height:35, alpha:0.5, originX:1, originY:0, x:ConstantsApp.STAGE_WIDTH, y:0 }));
-		this.coords = this.spriteManager.add(new TextSprite({ originX:1, originY:0, x:ConstantsApp.STAGE_WIDTH-15, y:23 }));
-		
-		this.spriteManager.add(new FillSprite({ color:0, width:90, height:35, alpha:0.5, originX:0, originY:0, x:0, y:0 }));
-		this.spriteManager.add(new TextSprite({ text:"BETA", originX:0, originY:0, x:15, y:23 }));
-		
-		this.spriteManager.add(new ButtonImageSprite({ asset:"home_btn", x:15+75/2, y:ConstantsApp.STAGE_HEIGHT-15-75/2, }))
-		.onClick.add(() => {
-			Global.screenManager.push(LoadingScreen);
-			Global.assets.load(ConstantsApp.assetPacks["initial"], () => {
-				Global.screenManager.pushAndReplace(MapSelectionScreen);
-			});
-		});
-		
 		this.tileDiag = MapScreen.TILE_DIAG * this.data.scale;
 		
 		if(ConstantsApp.showUrlParams) {
 			ConstantsApp.showUrlParams = false;
-			let [tTileX, tTileY] = Utils.getUrlParameter("c").split(",");
-			let tTileXDif = parseInt(tTileX) - this.data.spawnTileX;
-			let tTileYDif = parseInt(tTileY) - this.data.spawnTileY;
-			let tTILE_WIDTH = MapScreen.TILE_SIZEX*this.data.scale, tTILE_HEIGHT = MapScreen.TILE_SIZEY*this.data.scale;
-			let tXDif = (tTileXDif*tTILE_WIDTH) + (tTileYDif*tTILE_WIDTH),
-				tYDif = (-tTileXDif*tTILE_HEIGHT) + (tTileYDif*tTILE_HEIGHT);
-			
-			this.map.x = ConstantsApp.STAGE_CENTER_X-this.data.spawnX - tXDif;
-			this.map.y = ConstantsApp.STAGE_CENTER_Y-this.data.spawnY - tYDif;
-			this._clampMapToSides();
-			
-			this.map.add(new CustomSprite({ x:this.data.spawnX + tXDif, y:this.data.spawnY + tYDif, draw:(ctx)=>{
-				let strokeWidth = 3;
-				
-				ctx.shadowColor = "darkred";
-				ctx.shadowBlur = 3;
-				
-				ctx.beginPath();
-				ctx.arc(0, 0, 20, 0, 2 * Math.PI, false);
-				ctx.lineWidth = 10;
-				ctx.strokeStyle = 'darkred';
-				ctx.stroke();
-				
-				ctx.beginPath();
-				ctx.arc(0, 0, 20, 0, 2 * Math.PI, false);
-				ctx.lineWidth = 10-(strokeWidth*2);
-				ctx.strokeStyle = 'red';
-				ctx.stroke();
-			} }));
-			
+			if(Utils.getUrlParameter("c")) {
+				let tMarks = Utils.getUrlParameter("c").split("|");
+				for(let i=0; i<tMarks.length; i++) {
+					let [tTileX, tTileY] = tMarks[i].split(",");
+					// let tTileXDif = parseInt(tTileX) - this.data.spawnTileX;
+					// let tTileYDif = parseInt(tTileY) - this.data.spawnTileY;
+					// let tTILE_WIDTH = MapScreen.TILE_SIZEX*this.data.scale, tTILE_HEIGHT = MapScreen.TILE_SIZEY*this.data.scale;
+					// let tXDif = (tTileXDif*tTILE_WIDTH) + (tTileYDif*tTILE_WIDTH),
+					// 	tYDif = (-tTileXDif*tTILE_HEIGHT) + (tTileYDif*tTILE_HEIGHT);
+					
+					// this.map.x = ConstantsApp.STAGE_CENTER_X-this.data.spawnX - tXDif;
+					// this.map.y = ConstantsApp.STAGE_CENTER_Y-this.data.spawnY - tYDif;
+					var tPos = this._coordToPos(parseInt(tTileX), parseInt(tTileY));
+					this.map.to(ConstantsApp.STAGE_CENTER_X-tPos.x, ConstantsApp.STAGE_CENTER_Y-tPos.y);
+					this._clampMapToSides();
+					this.marks.push(this.map.add(new CircleMarker({}).toVector(tPos).setTile(parseInt(tTileX), parseInt(tTileY))));
+				}
+			}
 		}
 		if(ConstantsApp.OPTION_DEBUG) {
 			// See side of triangle used to find x/y tile distances
@@ -133,6 +123,78 @@ export default class MapScreen extends ScreenBase
 				ctx.stroke();
 			} }));
 		}
+		
+		this.sidebar = this.spriteManager.add(new FillSprite({ color:"#EEE", width:100, height:ConstantsApp.STAGE_HEIGHT, x:100*0.5, y:ConstantsApp.STAGE_CENTER_Y }));
+		
+		// Top part of sidebar
+		let tTopTray = this.sidebar.add(new Sprite({ y:-ConstantsApp.STAGE_CENTER_Y, }));
+		let tY = 35*0.5;//-ConstantsApp.STAGE_CENTER_Y+35*0.5;
+		tTopTray.add(new FillSprite({ color:0, width:100, height:35, alpha:0.5, y:tY }));
+		this.coords = tTopTray.add(new TextSprite({ text:"0, 0", y:tY }));
+		
+		tY = 35 + 20*0.5 + 2;//-ConstantsApp.STAGE_CENTER_Y+35 + 20*0.5 + 2;
+		tTopTray.add(new FillSprite({ color:0, width:100, height:20, alpha:0.5, y:tY }));
+		tTopTray.add(new TextSprite({ text:"(BETA)", fontSize:11, y:tY }));
+		
+		// Bottom part of sidebar
+		let tTrayBottom = this.sidebar.add(new Sprite({ y:ConstantsApp.STAGE_CENTER_Y, }));
+		let tBtn:ButtonImageSprite;
+		
+		tY = -12;//ConstantsApp.STAGE_CENTER_Y-12;
+		tY += -75/2;
+		tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
+		tBtn.onClick.add(() => {
+			Global.screenManager.push(LoadingScreen);
+			Global.assets.load(ConstantsApp.assetPacks["initial"], () => {
+				Global.screenManager.pushAndReplace(MapSelectionScreen);
+			});
+		});
+		
+		if(Utils.copyToClipboardSupported()) {
+			tY += -75/2 -43/2 -2;
+			tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
+			let tText = tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
+			tBtn.onClick.add(() => {
+				let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.name}`;
+				let tCoords:string[] = [];
+				for(let i=0; i < this.marks.length; i++) {
+					tCoords.push(this.marks[i].tileX+","+this.marks[i].tileY);
+				}
+				if(tCoords.length > 0) { tLink += "&c="+tCoords.join("|"); }
+				Utils.copyTextToClipboard(tLink);
+				tText.text = "Copied!"
+				setTimeout(()=>{ tText.text="🔗Share" }, 1000);
+			});
+		}
+		
+		tY += -43/2 -43/2 -2;
+		tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
+		let tText = tBtn.add(new TextSprite({ text:"Add Circle", fontSize:14, y:0 }));
+		tBtn.onClick.add(() => {
+			this.draggingMark = this.spriteManager.add(new CircleMarker({ x:Mouse.mouseX, y:Mouse.mouseY }));
+		});
+		
+		tBtn = null;
+		
+		ConstantsApp.onResize.add(this.resizeFunction = (pOldWidth, pOldHeight)=>{
+			this.map.to(ConstantsApp.STAGE_CENTER_X-tPos.x, ConstantsApp.STAGE_CENTER_Y-tPos.y);
+			this._clampMapToSides();
+			
+			this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
+			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
+			tTopTray.y = -ConstantsApp.STAGE_CENTER_Y;
+			tTrayBottom.y = ConstantsApp.STAGE_CENTER_Y;
+		});
+	}
+	dispose() : void {
+		super.dispose();
+		this.data = null;
+		this.map = null;
+		this.coords = null;
+		this.marks = null;
+		this.sidebar = null;
+		ConstantsApp.onResize.remove(this.resizeFunction);
+		this.resizeFunction = null;
 	}
 	protected _addEventListeners() : void {
 		Mouse.onMouseDown.add(this._onMouseDownBinded = this._onMouseDown.bind(this));
@@ -142,9 +204,6 @@ export default class MapScreen extends ScreenBase
 		Mouse.onMouseMove.remove(this._onMouseMoveBinded);
 		Mouse.onMouseDown.remove(this._onMouseDownBinded);
 	}
-	dispose() : void {
-		super.dispose();
-	}
 	update(dt) : void {
 		super.update(dt);
 	}
@@ -153,6 +212,12 @@ export default class MapScreen extends ScreenBase
 		this.mouseDownY = Mouse.mouseY;
 		this.mapDragX = this.map.x;
 		this.mapDragY = this.map.y;
+		
+		if(this.draggingMark != null) {
+			this.spriteManager.remove(this.draggingMark);
+			this.marks.push( this.map.add(this.draggingMark).setTile(this.curTileX, this.curTileY).toVector(this._coordToPos(this.curTileX, this.curTileY)) );
+			this.draggingMark = null;
+		}
 	}
 	_onMouseMove() : void {
 		if(Mouse.flagMouseDown) {
@@ -192,10 +257,14 @@ export default class MapScreen extends ScreenBase
 			// let tXDist = sideA;
 			
 			// console.log("Tiles worth of dist (relative to small map) away from spawn:", tXDist, tYDist);
-			let tTileX = this.data.spawnTileX + Math.floor(tXDist / (this.tileDiag));//sideB / (this.tileDiag));
-			let tTileY = this.data.spawnTileY + Math.floor(tYDist / (this.tileDiag));//sideA / (this.tileDiag));
+			let tTileX = this.curTileX = this.data.spawnTileX + Math.floor(tXDist / (this.tileDiag));//sideB / (this.tileDiag));
+			let tTileY = this.curTileY = this.data.spawnTileY + Math.floor(tYDist / (this.tileDiag));//sideA / (this.tileDiag));
 			this.coords.text = `${tTileX}, ${tTileY}`;
 			this.coords.updateFont(Global.context);
+		}
+		
+		if(this.draggingMark != null) {
+			this.draggingMark.to(Mouse.mouseX, Mouse.mouseY);
 		}
 	}
 	_clampMapToSides() : void {
@@ -206,5 +275,19 @@ export default class MapScreen extends ScreenBase
 		if(pAngle < 0) { return this._loopAngle(pAngle+pMax); }
 		else if(pAngle > pMax) { return this._loopAngle(pAngle-pMax); }
 		return pAngle;
+	}
+	
+	_coordToPos(pTileX:number, pTileY:number) : Vector {
+		let tTileXDif = pTileX - this.data.spawnTileX;
+		let tTileYDif = pTileY - this.data.spawnTileY;
+		let tTILE_WIDTH = MapScreen.TILE_SIZEX*this.data.scale, tTILE_HEIGHT = MapScreen.TILE_SIZEY*this.data.scale;
+		let tXDif = (tTileXDif*tTILE_WIDTH) + (tTileYDif*tTILE_WIDTH),
+			tYDif = (-tTileXDif*tTILE_HEIGHT) + (tTileYDif*tTILE_HEIGHT);
+		return new Vector(this.data.spawnX + tXDif, this.data.spawnY + tYDif);
+	}
+	
+	// TODO
+	_posToCoord(pX:number, pY:number) : Vector {
+		return new Vector();
 	}
 }

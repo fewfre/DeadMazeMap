@@ -1,4 +1,5 @@
 import ConstantsApp from "../../app/ConstantsApp";
+import Vector from "../math/Vector";
 
 export default class Sprite
 {
@@ -30,15 +31,15 @@ export default class Sprite
 		this.scaleX = pProp.scaleX != null ? pProp.scaleX : this.scale;
 		this.scaleY = pProp.scaleY != null ? pProp.scaleY : this.scale;
 		
-		this.origin = pProp.origin != null ? pProp.origin : 0.5;
-		this.originX = pProp.originX != null ? pProp.originX : this.origin;
-		this.originY = pProp.originY != null ? pProp.originY : this.origin;
+		let tOrigin = this.origin = pProp.origin != null ? pProp.origin : 0.5;
+		this.originX = pProp.originX != null ? pProp.originX : tOrigin;
+		this.originY = pProp.originY != null ? pProp.originY : tOrigin;
 		// this._addEventListeners();
 	}
 	
 	dispose() : void {
 		// this._removeEventListeners();
-		for(var i = this.children.length-1; i >= 0; i--) {
+		for(let i = this.children.length-1; i >= 0; i--) {
 			this.children[i].dispose();
 			this.children[i] = null;
 		}
@@ -63,6 +64,12 @@ export default class Sprite
 		return this;
 	}
 	
+	toVector(pPos:Vector) : this {
+		this.x = pPos.x;
+		this.y = pPos.y;
+		return this;
+	}
+	
 	add<T extends Sprite>(pSprite:T) : T {
 		this.children.push(pSprite);
 		pSprite.parent = this;
@@ -78,6 +85,8 @@ export default class Sprite
 	
 	protected _getDrawX() : number { return (this.parent != null ? this.parent._getDrawX() : 0) + this.x; }
 	protected _getDrawY() : number { return (this.parent != null ? this.parent._getDrawY() : 0) + this.y; }
+	// protected _getDrawScaleX() : number { return (this.parent != null ? this.parent._getDrawScaleX() : 1) * this.scaleX; }
+	// protected _getDrawScaleY() : number { return (this.parent != null ? this.parent._getDrawScaleY() : 1) * this.scaleY; }
 	protected _getDrawRotation() : number { return (this.parent != null ? this.parent._getDrawRotation() : 0) + this.rotation; }
 	
 	draw(ctx:CanvasRenderingContext2D) : void {

@@ -10,7 +10,7 @@ interface TextSpriteProp extends SpriteProp {
 
 export default class TextSprite extends Sprite
 {
-	text : string;
+	_text : string;
 	color : any;
 	protected font : string;
 	fontName : string;
@@ -21,7 +21,7 @@ export default class TextSprite extends Sprite
 	
 	constructor(pProp:TextSpriteProp) {
 		super(pProp);
-		this.text = pProp.text || "";
+		this._text = pProp.text || "";
 		this.color = pProp.color || "white";
 		this.fontName = pProp.fontName || "Arial";
 		this.fontSize = pProp.fontSize || 16;
@@ -37,11 +37,15 @@ export default class TextSprite extends Sprite
 	get width() : number { return this.sizeX; }
 	get height() : number { return this.sizeY; }
 	
+	get text() : string { return this._text; }
+	set text(pVal:string) { this._text = pVal; this.font = null; } // Set font to null as a flag to reset size
+	
 	updateFont(ctx:CanvasRenderingContext2D) : void {
 		this.font = `${this.fontStyle} ${this.fontSize * this.scale}px ${this.fontName}`;
 		ctx.save();
 		ctx.font = this.font;
-		this.sizeX = ctx.measureText(this.text).width;
+		this.sizeX = ctx.measureText(this._text).width;
+		// TODO: calc height? - https://stackoverflow.com/q/15582937/1411473
 		this.sizeY = this.fontSize;
 		ctx.restore();
 	}
@@ -49,6 +53,7 @@ export default class TextSprite extends Sprite
 		if(!this.font) { this.updateFont(ctx); }
 		ctx.fillStyle = this.color;
 		ctx.font = this.font;
-		ctx.fillText(this.text, this._getDrawX(), this._getDrawY());
+		ctx.textBaseline = "top"; // By default baseline is towards the bottom, so move it to top so origin works.
+		ctx.fillText(this._text, this._getDrawX(), this._getDrawY());
 	}
 }

@@ -8,8 +8,5 @@
 	},
 	"exclude": [
 		"node_modules"
-	],
-	"filesGlob": [
-		"src/js/*.ts"
 	]
 }

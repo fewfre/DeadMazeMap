@@ -17,7 +17,7 @@ export default class FewfEvent
 				break
 			}
 	}
-	dispatch() : void {
+	dispatch(...args) : void {
 		if(!this._list) { return; } // TODO: Don't dispose this object in the middle of dispatching!
 		for (var i = 0; i < this._list.length; i++) {
 			if(!this._list) { return; } // TODO: Don't dispose this object in the middle of dispatching!
