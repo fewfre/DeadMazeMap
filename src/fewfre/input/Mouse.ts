@@ -13,6 +13,7 @@ export default class Mouse
 	static onClick		: FewfEvent;
 	static onMouseDown	: FewfEvent;
 	static onMouseUp	: FewfEvent;
+	static onWheel		: FewfEvent;
 	
 	static init() : void {
 		Mouse.mouseX = -1000;
@@ -23,11 +24,13 @@ export default class Mouse
 		Global.canvas.addEventListener("click", Mouse._onClick);
 		Global.canvas.addEventListener("mousedown", Mouse._onmousedown);
 		window.addEventListener("mouseup", Mouse._onmouseup);
+		window.addEventListener("wheel", Mouse._onwheel);
 		
 		Mouse.onMouseMove = new FewfEvent();
 		Mouse.onClick = new FewfEvent();
 		Mouse.onMouseDown = new FewfEvent();
 		Mouse.onMouseUp = new FewfEvent();
+		Mouse.onWheel = new FewfEvent();
 	}
 	
 	static _onmousemove(e:MouseEvent) : void {
@@ -58,5 +61,9 @@ export default class Mouse
 		if(!Mouse.flagMouseDown) { return; }
 		Mouse.flagMouseDown = false;
 		Mouse.onMouseUp.dispatch();
+	}
+	
+	static _onwheel(e:WheelEvent) : void {
+		Mouse.onWheel.dispatch(e.deltaY, e.deltaX, e.deltaZ);
 	}
 }

@@ -26,6 +26,12 @@ export default class FillSprite extends Sprite
 	get width() : number { return this.sizeX; }
 	get height() : number { return this.sizeY; }
 	
+	setSize(pWidth:number, pHeight:number) : this {
+		this.sizeX = pWidth;
+		this.sizeY = pHeight;
+		return this;
+	}
+	
 	protected _customDraw(ctx:CanvasRenderingContext2D) : void {
 		// ctx.save();
 		// this._drawSetup(ctx);

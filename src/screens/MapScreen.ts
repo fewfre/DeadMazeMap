@@ -39,10 +39,13 @@ export default class MapScreen extends ScreenBase
 	curTileY : number;
 	
 	sidebar : FillSprite;
-	resizeFunction : any;
+	sidebarTrayTop : Sprite;
+	sidebarTrayBottom : Sprite;
+	// resizeFunction : any;
 	
 	private _onMouseDownBinded : any;
 	private _onMouseMoveBinded : any;
+	private _onWheelBinded : any;
 	
 	protected _buildScreen() : void {
 		this.data = ConstantsApp.screenData;
@@ -127,22 +130,22 @@ export default class MapScreen extends ScreenBase
 		this.sidebar = this.spriteManager.add(new FillSprite({ color:"#EEE", width:100, height:ConstantsApp.STAGE_HEIGHT, x:100*0.5, y:ConstantsApp.STAGE_CENTER_Y }));
 		
 		// Top part of sidebar
-		let tTopTray = this.sidebar.add(new Sprite({ y:-ConstantsApp.STAGE_CENTER_Y, }));
+		this.sidebarTrayTop = this.sidebar.add(new Sprite({ y:-ConstantsApp.STAGE_CENTER_Y, }));
 		let tY = 35*0.5;//-ConstantsApp.STAGE_CENTER_Y+35*0.5;
-		tTopTray.add(new FillSprite({ color:0, width:100, height:35, alpha:0.5, y:tY }));
-		this.coords = tTopTray.add(new TextSprite({ text:"0, 0", y:tY }));
+		this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:35, alpha:0.5, y:tY }));
+		this.coords = this.sidebarTrayTop.add(new TextSprite({ text:"0, 0", y:tY }));
 		
 		tY = 35 + 20*0.5 + 2;//-ConstantsApp.STAGE_CENTER_Y+35 + 20*0.5 + 2;
-		tTopTray.add(new FillSprite({ color:0, width:100, height:20, alpha:0.5, y:tY }));
-		tTopTray.add(new TextSprite({ text:"(BETA)", fontSize:11, y:tY }));
+		this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:20, alpha:0.5, y:tY }));
+		this.sidebarTrayTop.add(new TextSprite({ text:"(BETA)", fontSize:11, y:tY }));
 		
 		// Bottom part of sidebar
-		let tTrayBottom = this.sidebar.add(new Sprite({ y:ConstantsApp.STAGE_CENTER_Y, }));
+		this.sidebarTrayBottom = this.sidebar.add(new Sprite({ y:ConstantsApp.STAGE_CENTER_Y, }));
 		let tBtn:ButtonImageSprite;
 		
 		tY = -12;//ConstantsApp.STAGE_CENTER_Y-12;
 		tY += -75/2;
-		tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
+		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
 		tBtn.onClick.add(() => {
 			Global.screenManager.push(LoadingScreen);
 			Global.assets.load(ConstantsApp.assetPacks["initial"], () => {
@@ -152,7 +155,7 @@ export default class MapScreen extends ScreenBase
 		
 		if(Utils.copyToClipboardSupported()) {
 			tY += -75/2 -43/2 -2;
-			tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
+			tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
 			let tText = tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
 			tBtn.onClick.add(() => {
 				let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.name}`;
@@ -168,7 +171,7 @@ export default class MapScreen extends ScreenBase
 		}
 		
 		tY += -43/2 -43/2 -2;
-		tBtn = tTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
+		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
 		let tText = tBtn.add(new TextSprite({ text:"Add Circle", fontSize:14, y:0 }));
 		tBtn.onClick.add(() => {
 			this.draggingMark = this.spriteManager.add(new CircleMarker({ x:Mouse.mouseX, y:Mouse.mouseY }));
@@ -176,15 +179,24 @@ export default class MapScreen extends ScreenBase
 		
 		tBtn = null;
 		
-		ConstantsApp.onResize.add(this.resizeFunction = (pOldWidth, pOldHeight)=>{
-			this.map.to(ConstantsApp.STAGE_CENTER_X-tPos.x, ConstantsApp.STAGE_CENTER_Y-tPos.y);
-			this._clampMapToSides();
+		// ConstantsApp.onResize.add(this.resizeFunction = (pOldWidth, pOldHeight)=>{
+		// 	console.log(tPos);
+		// 	this.map.to(ConstantsApp.STAGE_CENTER_X-tPos.x, ConstantsApp.STAGE_CENTER_Y-tPos.y);
+		// 	this._clampMapToSides();
 			
-			this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
-			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
-			tTopTray.y = -ConstantsApp.STAGE_CENTER_Y;
-			tTrayBottom.y = ConstantsApp.STAGE_CENTER_Y;
-		});
+			
+		// });
+	}
+	onResize(pOldWidth:number, pOldHeight:number) : void {
+		// this.map.to(ConstantsApp.STAGE_CENTER_X-(this.map.x+pOldWidth*0.5), ConstantsApp.STAGE_CENTER_Y-(this.map.y+pOldHeight*0.5));
+		this.map.x += (ConstantsApp.STAGE_WIDTH-pOldWidth)*0.5;
+		this.map.y += (ConstantsApp.STAGE_HEIGHT-pOldHeight)*0.5;
+		this._clampMapToSides();
+			
+		this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
+		this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
+		this.sidebarTrayTop.y = -ConstantsApp.STAGE_CENTER_Y;
+		this.sidebarTrayBottom.y = ConstantsApp.STAGE_CENTER_Y;
 	}
 	dispose() : void {
 		super.dispose();
@@ -193,16 +205,20 @@ export default class MapScreen extends ScreenBase
 		this.coords = null;
 		this.marks = null;
 		this.sidebar = null;
-		ConstantsApp.onResize.remove(this.resizeFunction);
-		this.resizeFunction = null;
+		this.sidebarTrayTop = null;
+		this.sidebarTrayBottom = null;
+		// ConstantsApp.onResize.remove(this.resizeFunction);
+		// this.resizeFunction = null;
 	}
 	protected _addEventListeners() : void {
 		Mouse.onMouseDown.add(this._onMouseDownBinded = this._onMouseDown.bind(this));
 		Mouse.onMouseMove.add(this._onMouseMoveBinded = this._onMouseMove.bind(this));
+		Mouse.onWheel.add(this._onWheelBinded = this._onWheel.bind(this));
 	}
 	protected _removeEventListeners() : void {
 		Mouse.onMouseMove.remove(this._onMouseMoveBinded);
 		Mouse.onMouseDown.remove(this._onMouseDownBinded);
+		Mouse.onWheel.remove(this._onWheelBinded);
 	}
 	update(dt) : void {
 		super.update(dt);
@@ -267,9 +283,15 @@ export default class MapScreen extends ScreenBase
 			this.draggingMark.to(Mouse.mouseX, Mouse.mouseY);
 		}
 	}
+	_onWheel(pDeltaY:number) : void {
+		// console.log(pDeltaY);
+		// this.map.scale += pDeltaY*0.01;
+		// this.map.scale = Math.min(Math.max(this.map.scale, 0.5), 2);
+		// this._clampMapToSides();
+	}
 	_clampMapToSides() : void {
-		this.map.x = Utils.clamp(this.map.x, -(this.map.width - ConstantsApp.STAGE_WIDTH), 0);
-		this.map.y = Utils.clamp(this.map.y, -(this.map.height - ConstantsApp.STAGE_HEIGHT), 0);
+		this.map.x = Utils.clamp(this.map.x, -(this.map.width*this.map.scale - ConstantsApp.STAGE_WIDTH), 0);
+		this.map.y = Utils.clamp(this.map.y, -(this.map.height*this.map.scale - ConstantsApp.STAGE_HEIGHT), 0);
 	}
 	_loopAngle(pAngle:number, pMax:number=360) : number {
 		if(pAngle < 0) { return this._loopAngle(pAngle+pMax); }

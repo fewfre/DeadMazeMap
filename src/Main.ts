@@ -24,17 +24,20 @@ class Main
 		
 		Global.screenManager.pushAndReplace(LoadingScreen);
 		
-		// Preload
-		if(Utils.getUrlParameter("z")) {// && Utils.getUrlParameter("c")
-			ConstantsApp.showUrlParams = true;
-			let tZoneData = ConstantsApp.mapDatas[ Utils.getUrlParameter("z") ];
-			Global.assets.load(tZoneData.loadList.concat( ConstantsApp.assetPacks["map"] ), ()=>{
-				ConstantsApp.screenData = tZoneData;
-				Global.screenManager.pushAndReplace(MapScreen);
-			});
-		} else {
-			Global.assets.load(ConstantsApp.assetPacks["preload"], this._onInitialLoad.bind(this));
-		}
+		// This allows the page's onload to be called right away (instead of waiting for contents to be loaded). This way iframes see the app's loading screen.
+		setTimeout(()=>{
+			// Preload
+			if(Utils.getUrlParameter("z")) {// && Utils.getUrlParameter("c")
+				ConstantsApp.showUrlParams = true;
+				let tZoneData = ConstantsApp.mapDatas[ Utils.getUrlParameter("z") ];
+				Global.assets.load(tZoneData.loadList.concat( ConstantsApp.assetPacks["map"] ), ()=>{
+					ConstantsApp.screenData = tZoneData;
+					Global.screenManager.pushAndReplace(MapScreen);
+				});
+			} else {
+				Global.assets.load(ConstantsApp.assetPacks["preload"], this._onInitialLoad.bind(this));
+			}
+		}, 10);
 		
 		// Update
 		window.requestAnimationFrame(this.update.bind(this));
@@ -56,7 +59,7 @@ class Main
 	}
 	
 	private _onResize(e) {
-		console.log(document.body.clientWidth, document.body.clientHeight);
+		// console.log(document.body.clientWidth, document.body.clientHeight);
 		Global.canvas.width = document.body.clientWidth; Global.canvas.height = document.body.clientHeight;
 		let tOldWidth = ConstantsApp.STAGE_WIDTH, tOldHeight = ConstantsApp.STAGE_HEIGHT;
 		ConstantsApp.init();

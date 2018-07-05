@@ -5,9 +5,9 @@ import FewfEvent from "../fewfre/utils/FewfEvent";
 
 export default class ConstantsApp
 {
-	static readonly VERSION : string = "0.2";
+	static readonly VERSION : string = "0.3";
 	static readonly SOURCE_URL : string = "https://github.com/fewfre/DeadMazeMap";
-	static readonly SHORT_URL : string = "https://tr.im/dmmap";
+	static readonly SHORT_URL : string = "http://fewfre.com/dmmap";
 
 	static readonly OPTION_DEBUG : boolean = !!Utils.getUrlParameter("debug");
 	
