@@ -6,6 +6,7 @@ import ScreenBase from "../fewfre/screens/ScreenBase";
 import FillSprite from "../fewfre/display/FillSprite";
 import TextSprite from "../fewfre/display/TextSprite";
 import Global from "../fewfre/Global";
+import Manifest from "../app/Manifest";
 
 export default class MapSelectionScreen extends ScreenBase
 {
@@ -19,7 +20,8 @@ export default class MapSelectionScreen extends ScreenBase
 		for(var i = 0; i < tLocations.length; i++) {
 			tBtn = tray.add(new ButtonImageSprite({ asset:ConstantsApp.mapDatas[tLocations[i]].iconAsset, x:-((tLocations.length*0.5-0.5)*tSpacing) + tSpacing*i }));
 			this._buttons.push(tBtn);
-			(function(self, pName){ tBtn.onClick.add(() => { self.onMapSelected(pName); }); })( this, tLocations[i] );
+			let tLoc = tLocations[i];
+			tBtn.onClick.add(() => { this.onMapSelected(tLoc); });
 		}
 		
 		tray.add(new TextSprite({ text:"Dead Maze Map Explorer", y:-tray.height*0.5+75, fontSize:35 }));
@@ -43,9 +45,18 @@ export default class MapSelectionScreen extends ScreenBase
 	}
 	
 	loadMap(pMapData:MapData) : void {
-		Global.assets.load(pMapData.loadList.concat( ConstantsApp.assetPacks["map"] ), ()=>{
-			ConstantsApp.screenData = pMapData;
-			Global.screenManager.pushAndReplace(MapScreen);
-		});
+		// // Unload other zone packs to save up on memory.
+		// var tOtherPacks = [];
+		// for(let key in ConstantsApp.mapDatas) {
+		// 	if(ConstantsApp.mapDatas[key].packName == pMapData.packName) { continue; }
+		// 	tOtherPacks.push(ConstantsApp.mapDatas[key].packName);
+		// }
+		// Global.assets.unloadPacks(tOtherPacks, ()=>{
+			Global.assets.loadPacks([ pMapData.packName, "map" ], ()=>{
+				ConstantsApp.screenData = pMapData;
+				Global.screenManager.pushAndReplace(MapScreen);
+			});
+		// });
+		// tOtherPacks = null;
 	}
 }

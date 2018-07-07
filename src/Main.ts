@@ -5,6 +5,7 @@ import MapScreen from "./screens/MapScreen";
 import Global from "./fewfre/Global";
 import Mouse from "./fewfre/input/Mouse";
 import Utils from "./fewfre/utils/Utils";
+import Manifest from "./app/Manifest";
 
 //######################################
 // Main (instance class) - Start script and store values.
@@ -30,12 +31,13 @@ class Main
 			if(Utils.getUrlParameter("z")) {// && Utils.getUrlParameter("c")
 				ConstantsApp.showUrlParams = true;
 				let tZoneData = ConstantsApp.mapDatas[ Utils.getUrlParameter("z") ];
-				Global.assets.load(tZoneData.loadList.concat( ConstantsApp.assetPacks["map"] ), ()=>{
+				// Global.assets.load(Manifest.assetPacks[ tZoneData.packName ].concat( ConstantsApp.assetPacks["map"] ), ()=>{
+				Global.assets.loadPacks([ "preload", tZoneData.packName, "map" ], ()=>{
 					ConstantsApp.screenData = tZoneData;
 					Global.screenManager.pushAndReplace(MapScreen);
 				});
 			} else {
-				Global.assets.load(ConstantsApp.assetPacks["preload"], this._onInitialLoad.bind(this));
+				Global.assets.loadPacks(["preload"], this._onInitialLoad.bind(this));
 			}
 		}, 10);
 		
@@ -45,7 +47,7 @@ class Main
 	}
 	
 	private _onInitialLoad() {
-		Global.assets.load(ConstantsApp.assetPacks["initial"], this._onMapSelectionLoad.bind(this));
+		Global.assets.loadPacks(["initial"], this._onMapSelectionLoad.bind(this));
 	}
 
 	private _onMapSelectionLoad() {

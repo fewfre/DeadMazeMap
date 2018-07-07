@@ -39,6 +39,7 @@ export default class ButtonImageSprite extends ImageSprite
 	}
 	protected _removeEventListeners() : void {
 		Mouse.onClick.remove(this._onClickBinded);
+		this._onClickBinded = null;
 	}
 	
 	update(dt:number) : void {

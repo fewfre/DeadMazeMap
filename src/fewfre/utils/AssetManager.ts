@@ -1,3 +1,5 @@
+import Manifest from "../../app/Manifest";
+
 export default class AssetManager
 {
 	private _loadingCount : number;
@@ -14,19 +16,36 @@ export default class AssetManager
 		return null;
 	}
 	
-	load(pArray:(string|{ id:string, src:string })[], pCallback?:()=>void) : void {
-		for(var i = 0; i < pArray.length; i++) {
-			this._loadImage(pArray[i], pCallback);
+	loadList(pArray:string[], pCallback?:()=>void) : void {
+		for(let i = 0; i < pArray.length; i++) {
+			this._loadImage(pArray[i], Manifest.assets[ pArray[i] ], pCallback);
 		}
 	}
 	
-	unload(pArray:string[], pCallback?:()=>void) : void {
-		// Todo
+	// unloadList(pArray:{ id:string, src:string }[], pCallback?:()=>void) : void {
+	// 	// Todo
+	// 	for(let i = 0; i < pArray.length; i++) {
+	// 		this._unloadImage(pArray[i]);
+	// 	}
+	// 	if(pCallback) setTimeout(pCallback, 10); // Short timeout to make sure unloading is finished
+	// }
+	
+	loadPacks(pPacks:string[], pCallback?:()=>void) : void {
+		for(let i = 0; i < pPacks.length; i++) {
+			this.loadList( Manifest.assetPacks[ pPacks[i] ], pCallback );
+		}
 	}
 	
-	private _loadImage(pSource, pCallback:()=>void) : void {
-		let tFileID = null, tFilePath = pSource, tName, tType;
-		if(pSource.id) { tFileID = pSource.id; tFilePath = pSource.src; }
+	// unloadPacks(pPacks:string[], pCallback?:()=>void) : void {
+	// 	for(let i = 0; i < pPacks.length; i++) {
+	// 		this.unloadList( Manifest.assetPacks[ pPacks[i] ] );
+	// 	}
+	// 	if(pCallback) setTimeout(pCallback, 10); // Short timeout to make sure unloading is finished
+	// }
+	
+	private _loadImage(pID:string, pFile:string, pCallback:()=>void) : void {
+		let tFileID = pID, tFilePath = pFile, tName, tType;
+		// if(pSource.id) { tFileID = pSource.id; tFilePath = pSource.src; }
 		if(tFilePath.indexOf("/") > -1) {
 			[, tName, tType] = /(?:\/+)(?!.*\/)(.*)\.(.*)/g.exec(tFilePath);
 		} else {
@@ -53,10 +72,19 @@ export default class AssetManager
 		};
 		tImage.onerror = (e)=>{
 			console.error("[AssetManager](_loadImage) Failed to load asset: "+tFileID+": "+tFilePath);
+			tImage = null;
 			setTimeout(()=>{
 				this._loadingCount--;
 				if(this._loadingCount == 0) { if(pCallback) pCallback(); }
 			});
 		};
 	}
+	
+	// private _unloadImage(pSource:{ id:string, src:string }) : void {
+	// 	let tFileID = pSource.id;
+	// 	if(!this._files[tFileID]) { return; }//console.log("[AssetManager](_unloadImage) Asset already unloaded: "+tFileID);
+	// 	// this._files[tFileID].asset.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Clear source with 1x1 pixel to free memory
+	// 	this._files[tFileID].asset = null;
+	// 	delete this._files[tFileID];
+	// }
 }

@@ -1,3 +1,7 @@
+== V0.4 - 7 July 2018 ==
+- Asset data now stored in Manifest, and loaded in via pack names passed directly to AssetManager
+
+
 == V0.3 - 5 July 2018 ==
 - Fixed resize bug
 - Loading screen now supports being resized

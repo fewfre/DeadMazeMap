@@ -148,7 +148,7 @@ export default class MapScreen extends ScreenBase
 		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
 		tBtn.onClick.add(() => {
 			Global.screenManager.push(LoadingScreen);
-			Global.assets.load(ConstantsApp.assetPacks["initial"], () => {
+			Global.assets.loadPacks(["initial"], () => {
 				Global.screenManager.pushAndReplace(MapSelectionScreen);
 			});
 		});
@@ -158,7 +158,7 @@ export default class MapScreen extends ScreenBase
 			tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
 			let tText = tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
 			tBtn.onClick.add(() => {
-				let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.name}`;
+				let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.id}`;
 				let tCoords:string[] = [];
 				for(let i=0; i < this.marks.length; i++) {
 					tCoords.push(this.marks[i].tileX+","+this.marks[i].tileY);
@@ -204,6 +204,7 @@ export default class MapScreen extends ScreenBase
 		this.map = null;
 		this.coords = null;
 		this.marks = null;
+		this.draggingMark = null;
 		this.sidebar = null;
 		this.sidebarTrayTop = null;
 		this.sidebarTrayBottom = null;
@@ -219,6 +220,9 @@ export default class MapScreen extends ScreenBase
 		Mouse.onMouseMove.remove(this._onMouseMoveBinded);
 		Mouse.onMouseDown.remove(this._onMouseDownBinded);
 		Mouse.onWheel.remove(this._onWheelBinded);
+		this._onMouseMoveBinded = null;
+		this._onMouseDownBinded = null;
+		this._onWheelBinded = null;
 	}
 	update(dt) : void {
 		super.update(dt);
