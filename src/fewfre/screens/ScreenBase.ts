@@ -11,9 +11,7 @@ export default class ScreenBase
 		this.spriteManager = new SpriteManager();
 		this._buildScreen();
 		
-		ConstantsApp.onResize.add(this._resizeFunction = (pOldWidth, pOldHeight)=>{
-			this.onResize(pOldWidth, pOldHeight);
-		});
+		ConstantsApp.onResize.add(this.onResize, this);
 	}
 	protected _buildScreen() : void { } // Override
 	protected _addEventListeners() : void { } // Override
@@ -22,7 +20,7 @@ export default class ScreenBase
 	dispose() : void {
 		this._removeEventListeners();
 		this.spriteManager.dispose();
-		ConstantsApp.onResize.remove(this._resizeFunction);
+		ConstantsApp.onResize.remove(this.onResize, this);
 		this._resizeFunction = null;
 	}
 	update(dt:number) : void {

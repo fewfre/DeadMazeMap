@@ -43,10 +43,6 @@ export default class MapScreen extends ScreenBase
 	sidebarTrayBottom : Sprite;
 	// resizeFunction : any;
 	
-	private _onMouseDownBinded : any;
-	private _onMouseMoveBinded : any;
-	private _onWheelBinded : any;
-	
 	protected _buildScreen() : void {
 		this.data = ConstantsApp.screenData;
 		this.marks = [];
@@ -146,36 +142,19 @@ export default class MapScreen extends ScreenBase
 		tY = -12;//ConstantsApp.STAGE_CENTER_Y-12;
 		tY += -75/2;
 		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
-		tBtn.onClick.add(() => {
-			Global.screenManager.push(LoadingScreen);
-			Global.assets.loadPacks(["initial"], () => {
-				Global.screenManager.pushAndReplace(MapSelectionScreen);
-			});
-		});
+		tBtn.onClick.add(this._onHomeClick, this);
 		
 		if(Utils.copyToClipboardSupported()) {
 			tY += -75/2 -43/2 -2;
 			tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
-			let tText = tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
-			tBtn.onClick.add(() => {
-				let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.id}`;
-				let tCoords:string[] = [];
-				for(let i=0; i < this.marks.length; i++) {
-					tCoords.push(this.marks[i].tileX+","+this.marks[i].tileY);
-				}
-				if(tCoords.length > 0) { tLink += "&c="+tCoords.join("|"); }
-				Utils.copyTextToClipboard(tLink);
-				tText.text = "Copied!"
-				setTimeout(()=>{ tText.text="🔗Share" }, 1000);
-			});
+			tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
+			tBtn.onClick.add(this._onCopyToClipboardClick, this);
 		}
 		
 		tY += -43/2 -43/2 -2;
 		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
 		let tText = tBtn.add(new TextSprite({ text:"Add Circle", fontSize:14, y:0 }));
-		tBtn.onClick.add(() => {
-			this.draggingMark = this.spriteManager.add(new CircleMarker({ x:Mouse.mouseX, y:Mouse.mouseY }));
-		});
+		tBtn.onClick.add(this._onAddCircleClick, this);
 		
 		tBtn = null;
 		
@@ -212,18 +191,38 @@ export default class MapScreen extends ScreenBase
 		// this.resizeFunction = null;
 	}
 	protected _addEventListeners() : void {
-		Mouse.onMouseDown.add(this._onMouseDownBinded = this._onMouseDown.bind(this));
-		Mouse.onMouseMove.add(this._onMouseMoveBinded = this._onMouseMove.bind(this));
-		Mouse.onWheel.add(this._onWheelBinded = this._onWheel.bind(this));
+		Mouse.onMouseDown.add(this._onMouseDown, this);
+		Mouse.onMouseMove.add(this._onMouseMove, this);
+		Mouse.onWheel.add(this._onWheel, this);
 	}
 	protected _removeEventListeners() : void {
-		Mouse.onMouseMove.remove(this._onMouseMoveBinded);
-		Mouse.onMouseDown.remove(this._onMouseDownBinded);
-		Mouse.onWheel.remove(this._onWheelBinded);
-		this._onMouseMoveBinded = null;
-		this._onMouseDownBinded = null;
-		this._onWheelBinded = null;
+		Mouse.onMouseDown.remove(this._onMouseDown, this);
+		Mouse.onMouseMove.remove(this._onMouseMove, this);
+		Mouse.onWheel.remove(this._onWheel, this);
 	}
+	
+	protected _onAddCircleClick() : void {
+		this.draggingMark = this.spriteManager.add(new CircleMarker({ x:Mouse.mouseX, y:Mouse.mouseY }));
+	}
+	protected _onCopyToClipboardClick(pButton:ButtonImageSprite) : void {
+		let tLink = `${ConstantsApp.SHORT_URL}?z=${this.data.id}`;
+		let tCoords:string[] = [];
+		for(let i=0; i < this.marks.length; i++) {
+			tCoords.push(this.marks[i].tileX+","+this.marks[i].tileY);
+		}
+		if(tCoords.length > 0) { tLink += "&c="+tCoords.join("|"); }
+		Utils.copyTextToClipboard(tLink);
+		let tText = pButton.children[0] as TextSprite;
+		tText.text = "Copied!"
+		setTimeout(()=>{ tText.text="🔗Share" }, 1000);
+	}
+	protected _onHomeClick() {
+		Global.screenManager.push(LoadingScreen);
+		Global.assets.loadPacks(["initial"], () => {
+			Global.screenManager.pushAndReplace(MapSelectionScreen);
+		});
+	}
+	
 	update(dt) : void {
 		super.update(dt);
 	}

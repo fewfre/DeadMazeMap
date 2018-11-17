@@ -6,7 +6,7 @@ import Manifest from "./Manifest";
 
 export default class ConstantsApp
 {
-	static readonly VERSION : string = "0.4";
+	static readonly VERSION : string = "0.5";
 	static readonly SOURCE_URL : string = "https://github.com/fewfre/DeadMazeMap";
 	static readonly SHORT_URL : string = "http://fewfre.com/dmmap";
 
@@ -31,32 +31,6 @@ export default class ConstantsApp
 		ConstantsApp.STAGE_CENTER_X = Global.canvas.width*0.5
 		ConstantsApp.STAGE_CENTER_Y = Global.canvas.height*0.5;
 	}
-	
-	// static readonly VIGNETTE_BASE : string = "https://vignette.wikia.nocookie.net/deadmaze/images";
-	
-	// static readonly assetPacks : { [packname:string]:(string|{ id:string, src:string })[]; } = {
-	// 	preload: [
-	// 		"https://fewfre.com/images/avatar.jpg?tag=dmmap&ref="+encodeURIComponent(document.referrer),
-	// 	],
-	// 	initial: [
-	// 		"images/github.png",
-	// 		// URBAN
-	// 		{ id:"sac_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/38.png" },
-	// 		{ id:"bodega_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/45.png" },
-	// 		{ id:"santa_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/46.png" },
-	// 		{ id:"mazon_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/10.png" },
-	// 		{ id:"mall_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/11.png" },
-	// 		// DESERT
-	// 		{ id:"walker_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/15.png" },
-	// 		{ id:"museum_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/39.png" },
-	// 		{ id:"highway_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/49.png" },
-	// 		{ id:"mesa_icon", src:"https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/63.png" },
-	// 	],
-	// 	map: [
-	// 		{ id:"home_btn", src:"https://vignette.wikia.nocookie.net/transformice/images/4/41/Menu_icon.png/revision/latest/scale-to-width-down/75?cb=20151223164027&t=.png" },
-	// 		{ id:"black_button", src:"images/black_button.png" },
-	// 	],
-	// };
 	
 	static readonly mapDatas : { [mapkey:string]:MapData; } = {
 		// URBAN
