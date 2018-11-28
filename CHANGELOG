@@ -1,3 +1,7 @@
+== V0.5b - 27 November 2018 ==
+- Added title to initial loading phase
+
+
 == V0.5 - 17 November 2018 ==
 - Updated FewfEvent behavior to allow passing in thisArg instead of binding function before passing in.
 - Updated ButtonImageSpriteProp to have "states". This will prevent accidental clicks when dragging map and letting go of drag over a button.

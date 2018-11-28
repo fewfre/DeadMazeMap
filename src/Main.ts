@@ -1,11 +1,11 @@
 import ConstantsApp from "./app/ConstantsApp";
 import LoadingScreen from "./screens/LoadingScreen";
+import SplashScreen from "./screens/SplashScreen";
 import MapSelectionScreen from "./screens/MapSelectionScreen";
 import MapScreen from "./screens/MapScreen";
 import Global from "./fewfre/Global";
 import Mouse from "./fewfre/input/Mouse";
 import Utils from "./fewfre/utils/Utils";
-import Manifest from "./app/Manifest";
 
 //######################################
 // Main (instance class) - Start script and store values.
@@ -24,6 +24,7 @@ class Main
 		Mouse.init();
 		
 		Global.screenManager.pushAndReplace(LoadingScreen);
+		Global.screenManager.push(SplashScreen);
 		
 		// This allows the page's onload to be called right away (instead of waiting for contents to be loaded). This way iframes see the app's loading screen.
 		setTimeout(()=>{

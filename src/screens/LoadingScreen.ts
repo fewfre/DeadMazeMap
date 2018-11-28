@@ -3,7 +3,6 @@ import ParticleEmitter from "../display/ParticleEmitter";
 import ScreenBase from "../fewfre/screens/ScreenBase";
 import Sprite from "../fewfre/display/Sprite";
 import FillSprite from "../fewfre/display/FillSprite";
-import CustomSprite from "../fewfre/display/CustomSprite";
 import TextSprite from "../fewfre/display/TextSprite";
 import Mouse from "../fewfre/input/Mouse";
 import GearSprite from "../display/GearSprite";
