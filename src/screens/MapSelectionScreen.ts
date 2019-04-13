@@ -52,7 +52,7 @@ export default class MapSelectionScreen extends ScreenBase
 		// 	tOtherPacks.push(ConstantsApp.mapDatas[key].packName);
 		// }
 		// Global.assets.unloadPacks(tOtherPacks, ()=>{
-			Global.assets.loadPacks([ pMapData.packName, "map" ], ()=>{
+			Global.assets.loadPacks([ pMapData.packName, "map" ]).then(()=>{
 				ConstantsApp.screenData = pMapData;
 				Global.screenManager.pushAndReplace(MapScreen);
 			});

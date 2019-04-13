@@ -218,7 +218,7 @@ export default class MapScreen extends ScreenBase
 	}
 	protected _onHomeClick() {
 		Global.screenManager.push(LoadingScreen);
-		Global.assets.loadPacks(["initial"], () => {
+		Global.assets.loadPacks(["initial"]).then(() => {
 			Global.screenManager.pushAndReplace(MapSelectionScreen);
 		});
 	}

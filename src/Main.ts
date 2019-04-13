@@ -33,12 +33,14 @@ class Main
 				ConstantsApp.showUrlParams = true;
 				let tZoneData = ConstantsApp.mapDatas[ Utils.getUrlParameter("z") ];
 				// Global.assets.load(Manifest.assetPacks[ tZoneData.packName ].concat( ConstantsApp.assetPacks["map"] ), ()=>{
-				Global.assets.loadPacks([ "preload", tZoneData.packName, "map" ], ()=>{
+				Global.assets.loadPacks([ "preload", tZoneData.packName, "map" ]).then(()=>{
 					ConstantsApp.screenData = tZoneData;
 					Global.screenManager.pushAndReplace(MapScreen);
 				});
 			} else {
-				Global.assets.loadPacks(["preload"], this._onInitialLoad.bind(this));
+				Global.assets.loadPacks(["preload"]).then(()=>{
+					this._onInitialLoad();
+				});
 			}
 		}, 10);
 		
@@ -48,7 +50,9 @@ class Main
 	}
 	
 	private _onInitialLoad() {
-		Global.assets.loadPacks(["initial"], this._onMapSelectionLoad.bind(this));
+		Global.assets.loadPacks(["initial"]).then(()=>{
+			this._onMapSelectionLoad();
+		});
 	}
 
 	private _onMapSelectionLoad() {
