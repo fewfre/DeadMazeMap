@@ -13,6 +13,7 @@ import Mouse from "../fewfre/input/Mouse";
 import Sprite from "../fewfre/display/Sprite";
 import CircleMarker from "../display/CircleMarker";
 import Vector from "../fewfre/math/Vector";
+import MapTilesSprite from "../display/MapTilesSprite";
 
 export default class MapScreen extends ScreenBase
 {
@@ -25,6 +26,7 @@ export default class MapScreen extends ScreenBase
 	
 	data : MapData;
 	map : ImageSprite;
+	mapTilesSprite : MapTilesSprite;
 	coords : TextSprite;
 	tileDiag : number;
 	marks : CircleMarker[];
@@ -52,8 +54,21 @@ export default class MapScreen extends ScreenBase
 		
 		this.spriteManager.add(new FillSprite({ color:0, width:ConstantsApp.STAGE_WIDTH, height:ConstantsApp.STAGE_HEIGHT, origin:0 }));
 		
-		this.map = this.spriteManager.add(new ImageSprite({ asset:this.data.mapAsset, origin:0, x:ConstantsApp.STAGE_CENTER_X-this.data.spawnX, y:ConstantsApp.STAGE_CENTER_Y-this.data.spawnY }));
+		this.map = this.spriteManager.add(new ImageSprite({ /*asset:this.data.mapAsset,*/asset:null, origin:0, x:ConstantsApp.STAGE_CENTER_X-this.data.spawnX, y:ConstantsApp.STAGE_CENTER_Y-this.data.spawnY }));
+		this.mapTilesSprite = this.map.add(new MapTilesSprite(this.data.world, {}));
+		this.mapTilesSprite.updateDrawArea();
+		
 		this._clampMapToSides();
+		
+		// const tileScale = 0.4;
+		// // for (let i = 0; i < this.data.world.tiles.length; i++) {
+		// for (let i = this.data.world.tiles.length-1; i >= 0; i--) {
+		// 	for (let j = 0; j < this.data.world.tiles[i].length; j++) {
+		// 		const tile = this.data.world.tiles[i][j];
+		// 		let x = i*42*tileScale + j*42*tileScale, y=i*-21*tileScale + j*21*tileScale + tile.offset*tileScale;
+		// 		this.map.add(new ImageSprite({ asset:"floor"+tile.ground, origin:0, scale:tileScale, x:75+x, y:ConstantsApp.STAGE_CENTER_Y+y }));
+		// 	}
+		// }
 		
 		this.tileDiag = MapScreen.TILE_DIAG * this.data.scale;
 		
@@ -293,8 +308,9 @@ export default class MapScreen extends ScreenBase
 		// this._clampMapToSides();
 	}
 	_clampMapToSides() : void {
-		this.map.x = Utils.clamp(this.map.x, -(this.map.width*this.map.scale - ConstantsApp.STAGE_WIDTH), 0);
-		this.map.y = Utils.clamp(this.map.y, -(this.map.height*this.map.scale - ConstantsApp.STAGE_HEIGHT), 0);
+		// this.map.x = Utils.clamp(this.map.x, -(this.map.width*this.map.scale - ConstantsApp.STAGE_WIDTH), 0);
+		// this.map.y = Utils.clamp(this.map.y, -(this.map.height*this.map.scale - ConstantsApp.STAGE_HEIGHT), 0);
+		this.mapTilesSprite.updateDrawArea();
 	}
 	_loopAngle(pAngle:number, pMax:number=360) : number {
 		if(pAngle < 0) { return this._loopAngle(pAngle+pMax); }

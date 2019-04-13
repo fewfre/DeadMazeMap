@@ -6,11 +6,13 @@ export default class Manifest
 	static readonly VIGNETTE_BASE : string = "https://vignette.wikia.nocookie.net/deadmaze/images";
 	
 	// static readonly assets : { [assetname:string]:(string|ManifestAssetData); } = {
-	static readonly assets : { [assetname:string]:string } = {
+	static readonly assets : { [assetname:string]:string } = {...{
 		avatar: "https://fewfre.com/images/avatar.jpg?tag=dmmap&ref="+encodeURIComponent(document.referrer),
 		github: "images/github.png",
 		home_btn: "https://vignette.wikia.nocookie.net/transformice/images/4/41/Menu_icon.png/revision/latest/scale-to-width-down/75?cb=20151223164027&t=.png",
 		black_button: "images/black_button.png",
+		// SPECIAL icons
+		lakeview_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/2.png",
 		// URBAN icons
 		sac_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/38.png",
 		bodega_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/45.png",
@@ -32,11 +34,25 @@ export default class Manifest
 		museum_map: Manifest.VIGNETTE_BASE+"/7/73/Arizona_Jurassic_Museum_map.png/revision/latest/scale-to-width-down/10000?cb=20180304145247&t=.png",
 		highway_map: Manifest.VIGNETTE_BASE+"/b/bc/Highway_99_map.png/revision/latest/scale-to-width-down/10000?cb=20180309011141&t=.png",
 		mesa_map: Manifest.VIGNETTE_BASE+"/f/fa/Blue_Mesa_map.png/revision/latest/scale-to-width-down/10000?cb=20180323133818&t=.png",
+	},
+		// This adds all the floor assets
+		...(()=>{
+			let floors = {};
+			const urlbase = "http://www.transformice.com/images/x_deadmeat/x_pictos";
+			for (let i = 0; i < 55; i++) {
+				floors["floor"+i] = `${urlbase}/s_${i}.png`;
+			}
+			for (let i = 1000; i < 1500; i++) {
+				floors["floor"+i] = `${urlbase}/s_${i}.png`;
+			}
+			return floors;
+		})()
 	};
 	
 	static readonly assetPacks : { [packname:string]:ManifestPackData; } = {
 		preload: ["avatar"],
 		initial: ["github",
+			"lakeview_icon",
 			"sac_icon", "bodega_icon", "santa_icon", "mazon_icon", "mall_icon",
 			"walker_icon", "museum_icon", "highway_icon", "mesa_icon",
 		],

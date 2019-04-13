@@ -39,12 +39,12 @@ gulp.task('core', function() {
 
 // https://opnsrce.github.io/how-to-make-gulp-copy-a-directory-and-its-contents
 gulp.task('copy-images', function() {
-	return gulp.src(['images/*'], {
+	return gulp.src(['images/**/*'], {
 		base: ''
 	}).pipe(gulp.dest('build/images'));
 });
 gulp.task('copy-web', function() {
-	return gulp.src(['web/*'], {
+	return gulp.src(['web/**/*'], {
 		base: ''
 	}).pipe(gulp.dest('build'));
 });

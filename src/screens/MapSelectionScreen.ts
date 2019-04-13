@@ -5,6 +5,7 @@ import ButtonImageSprite from "../fewfre/display/ButtonImageSprite";
 import ScreenBase from "../fewfre/screens/ScreenBase";
 import FillSprite from "../fewfre/display/FillSprite";
 import TextSprite from "../fewfre/display/TextSprite";
+import World from "../data/World";
 import Global from "../fewfre/Global";
 import Manifest from "../app/Manifest";
 
@@ -16,7 +17,7 @@ export default class MapSelectionScreen extends ScreenBase
 		this._buttons = [];
 		this.spriteManager.add(new FillSprite({ color:"darkgreen", width:ConstantsApp.STAGE_WIDTH*0.8+6, height:ConstantsApp.STAGE_HEIGHT*0.8+6, x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y }));
 		let tray = this.spriteManager.add(new FillSprite({ color:"green", width:ConstantsApp.STAGE_WIDTH*0.8, height:ConstantsApp.STAGE_HEIGHT*0.8, x:ConstantsApp.STAGE_CENTER_X, y:ConstantsApp.STAGE_CENTER_Y }));
-		let tLocations = [ "sac", "bay", "santa", "mazon", "mall", "walker", "museum", "highway", "mesa" ], tSpacing = 55, tBtn;
+		let tLocations = [ "lake", "sac", "bay", "santa", "mazon", "mall", "walker", "museum", "highway", "mesa" ], tSpacing = 55, tBtn;
 		for(var i = 0; i < tLocations.length; i++) {
 			tBtn = tray.add(new ButtonImageSprite({ asset:ConstantsApp.mapDatas[tLocations[i]].iconAsset, x:-((tLocations.length*0.5-0.5)*tSpacing) + tSpacing*i }));
 			this._buttons.push(tBtn);
@@ -52,8 +53,34 @@ export default class MapSelectionScreen extends ScreenBase
 		// 	tOtherPacks.push(ConstantsApp.mapDatas[key].packName);
 		// }
 		// Global.assets.unloadPacks(tOtherPacks, ()=>{
-			Global.assets.loadPacks([ pMapData.packName, "map" ]).then(()=>{
+			let mapPackPromise = Global.assets.loadPacks([ pMapData.packName, "map" ]).then(()=>{
 				ConstantsApp.screenData = pMapData;
+			});
+			let promises = [mapPackPromise];
+			if(!pMapData.world) {
+				let tileDataPromise = new Promise<void>(async (resolve, reject)=>{
+					fetch('data/'+pMapData.tileFile)
+					.then(function(response) { return response.blob(); })
+					.then(function(blob) {
+						let file = new FileReader();
+						file.onload = function(event) {
+							pMapData.world = World.parse(new Uint8Array(event.target.result));
+							console.log(pMapData.world);
+							let floorAssets:Set<string> = new Set();
+							pMapData.world.tiles.forEach((arr2)=>{
+								arr2.forEach((tile)=>{
+									floorAssets.add( "floor"+tile.ground );
+								});
+							});
+							const onAssetLoaded = ()=>{ setTimeout(resolve, 3000); };
+							Global.assets.loadList(Array.from(floorAssets)).then(onAssetLoaded).catch(onAssetLoaded);
+						};
+						file.readAsArrayBuffer(blob);
+					});
+				});
+				promises.push(tileDataPromise);
+			}
+			Promise.all(promises).then(()=>{
 				Global.screenManager.pushAndReplace(MapScreen);
 			});
 		// });

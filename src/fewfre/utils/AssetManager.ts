@@ -56,6 +56,11 @@ export default class AssetManager
 	private _loadImage(pID:string, pFile:string) : Promise<void> {
 		return new Promise((resolve, reject)=>{
 			let tFileID = pID, tFilePath = pFile, tName, tType;
+			if(!tFilePath) {
+				console.error("(_loadImage) No file path for: "+pID);
+				reject();
+				return;
+			}
 			// if(pSource.id) { tFileID = pSource.id; tFilePath = pSource.src; }
 			if(tFilePath.indexOf("/") > -1) {
 				[, tName, tType] = /(?:\/+)(?!.*\/)(.*)\.(.*)/g.exec(tFilePath);

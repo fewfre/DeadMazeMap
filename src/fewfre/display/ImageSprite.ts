@@ -24,10 +24,11 @@ export default class ImageSprite extends Sprite
 		return this;
 	}
 	
-	get width() : number { return this.file.width; }
-	get height() : number { return this.file.height; }
+	get width() : number { return this.file?this.file.width:0; }
+	get height() : number { return this.file?this.file.height:0; }
 	
 	protected _customDraw(ctx:CanvasRenderingContext2D) : void {
+		if(!this.file) { return; }
 		// ctx.save();
 		// this._drawSetup(ctx);
 		ctx.drawImage(this.file.asset, this._getDrawX(), this._getDrawY(), this.width*this.scaleX, this.height*this.scaleY);
