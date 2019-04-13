@@ -19,6 +19,11 @@ export default class ImageSprite extends Sprite
 		this.file = null;
 	}
 	
+	setAsset(pAsset:string) : this {
+		this.file = Global.assets.file(pAsset);
+		return this;
+	}
+	
 	get width() : number { return this.file.width; }
 	get height() : number { return this.file.height; }
 	
