@@ -1,7 +1,4 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-var insert = require('gulp-insert');
-var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
