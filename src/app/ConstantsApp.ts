@@ -6,7 +6,7 @@ import Manifest from "./Manifest";
 
 export default class ConstantsApp
 {
-	static readonly VERSION : string = "0.5b";
+	static readonly VERSION : string = "0.6";
 	static readonly SOURCE_URL : string = "https://github.com/fewfre/DeadMazeMap";
 	static readonly SHORT_URL : string = "http://fewfre.com/dmmap";
 

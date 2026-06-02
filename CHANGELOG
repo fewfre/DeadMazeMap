@@ -1,3 +1,8 @@
+== V0.6 - 13 April 2019 ==
+- Maps are now drawn tile by tile (only onscreen tiles are drawn)
+- Lakeview map added
+
+
 == V0.5b - 27 November 2018 ==
 - Added title to initial loading phase
 
