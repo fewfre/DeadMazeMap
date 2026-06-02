@@ -1,18 +1,20 @@
 {
   "name": "deadmaze-map",
   "version": "0.0.0",
+  "scripts": {
+    "build": "gulp"
+  },
   "dependencies": {},
   "devDependencies": {
     "browserify": "^13.1.1",
-	"gulp": "^3.9.0",
-	"gulp-concat": "^2.6.0",
+    "gulp": "^5.0.0",
+    "gulp-concat": "^2.6.1",
     "gulp-insert": "^0.5.0",
-    "gulp-replace": "^0.5.4",
-    "gulp-typescript": "^3.1.1",
-    "gulp-uglify": "^3.0.0",
-    "tsify": "^2.0.2",
-    "typescript": "^2.0.10",
+    "gulp-replace": "^1.1.4",
+    "gulp-uglify": "^3.0.2",
+    "tsify": "^5.0.4",
+    "typescript": "^6.0.3",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^1.1.2"
+    "vinyl-source-stream": "^2.0.0"
   }
 }
