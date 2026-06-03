@@ -1,18 +1,18 @@
 import ConstantsApp from "../app/ConstantsApp";
-import MapSelectionScreen from "./MapSelectionScreen";
-import LoadingScreen from "./LoadingScreen";
-import ScreenBase from "../fewfre/screens/ScreenBase";
-import ImageSprite from "../fewfre/display/ImageSprite";
-import TextSprite from "../fewfre/display/TextSprite";
-import FillSprite from "../fewfre/display/FillSprite";
-import ButtonImageSprite from "../fewfre/display/ButtonImageSprite";
-import Global from "../fewfre/Global";
-import Utils from "../fewfre/utils/Utils";
-import CustomSprite from "../fewfre/display/CustomSprite";
-import Mouse from "../fewfre/input/Mouse";
-import Sprite from "../fewfre/display/Sprite";
 import CircleMarker from "../display/CircleMarker";
+import ButtonImageSprite from "../fewfre/display/ButtonImageSprite";
+import CustomSprite from "../fewfre/display/CustomSprite";
+import FillSprite from "../fewfre/display/FillSprite";
+import ImageSprite from "../fewfre/display/ImageSprite";
+import Sprite from "../fewfre/display/Sprite";
+import TextSprite from "../fewfre/display/TextSprite";
+import Global from "../fewfre/Global";
+import Mouse from "../fewfre/input/Mouse";
 import Vector from "../fewfre/math/Vector";
+import ScreenBase from "../fewfre/screens/ScreenBase";
+import Utils from "../fewfre/utils/Utils";
+import LoadingScreen from "./LoadingScreen";
+import MapSelectionScreen from "./MapSelectionScreen";
 
 export default class MapScreen extends ScreenBase
 {
@@ -123,40 +123,45 @@ export default class MapScreen extends ScreenBase
 			} }));
 		}
 		
-		this.sidebar = this.spriteManager.add(new FillSprite({ color:"#EEE", width:100, height:ConstantsApp.STAGE_HEIGHT, x:100*0.5, y:ConstantsApp.STAGE_CENTER_Y }));
-		
-		// Top part of sidebar
-		this.sidebarTrayTop = this.sidebar.add(new Sprite({ y:-ConstantsApp.STAGE_CENTER_Y, }));
-		let tY = 35*0.5;//-ConstantsApp.STAGE_CENTER_Y+35*0.5;
-		this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:35, alpha:0.5, y:tY }));
-		this.coords = this.sidebarTrayTop.add(new TextSprite({ text:"0, 0", y:tY }));
-		
-		tY = 35 + 20*0.5 + 2;//-ConstantsApp.STAGE_CENTER_Y+35 + 20*0.5 + 2;
-		this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:20, alpha:0.5, y:tY }));
-		this.sidebarTrayTop.add(new TextSprite({ text:"(BETA)", fontSize:11, y:tY }));
-		
-		// Bottom part of sidebar
-		this.sidebarTrayBottom = this.sidebar.add(new Sprite({ y:ConstantsApp.STAGE_CENTER_Y, }));
-		let tBtn:ButtonImageSprite;
-		
-		tY = -12;//ConstantsApp.STAGE_CENTER_Y-12;
-		tY += -75/2;
-		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
-		tBtn.onClick.add(this._onHomeClick, this);
-		
-		if(Utils.copyToClipboardSupported()) {
-			tY += -75/2 -43/2 -2;
+		if (ConstantsApp.OPTION_EMBED) {
+			this.sidebar = this.spriteManager.add(new FillSprite({ color:0, alpha:0.5, width:60, height:24, x:10, y:10, origin:0 }));
+			this.coords = this.spriteManager.add(new TextSprite({ text:"0, 0", fontSize:14, x:14, y:16, origin:0 }));
+		} else {
+			this.sidebar = this.spriteManager.add(new FillSprite({ color:"#EEE", width:100, height:ConstantsApp.STAGE_HEIGHT, x:100*0.5, y:ConstantsApp.STAGE_CENTER_Y }));
+			
+			// Top part of sidebar
+			this.sidebarTrayTop = this.sidebar.add(new Sprite({ y:-ConstantsApp.STAGE_CENTER_Y }));
+			let tY = 35*0.5;//-ConstantsApp.STAGE_CENTER_Y+35*0.5;
+			this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:35, alpha:0.5, y:tY }));
+			this.coords = this.sidebarTrayTop.add(new TextSprite({ text:"0, 0", y:tY }));
+			
+			tY = 35 + 20*0.5 + 2;//-ConstantsApp.STAGE_CENTER_Y+35 + 20*0.5 + 2;
+			this.sidebarTrayTop.add(new FillSprite({ color:0, width:100, height:20, alpha:0.5, y:tY }));
+			this.sidebarTrayTop.add(new TextSprite({ text:"(BETA)", fontSize:11, y:tY }));
+			
+			// Bottom part of sidebar
+			this.sidebarTrayBottom = this.sidebar.add(new Sprite({ y:ConstantsApp.STAGE_CENTER_Y }));
+			let tBtn:ButtonImageSprite;
+			
+			tY = -12;//ConstantsApp.STAGE_CENTER_Y-12;
+			tY += -75/2;
+			tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"home_btn", y:tY, }));
+			tBtn.onClick.add(this._onHomeClick, this);
+			
+			if(Utils.copyToClipboardSupported()) {
+				tY += -75/2 -43/2 -2;
+				tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
+				tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
+				tBtn.onClick.add(this._onCopyToClipboardClick, this);
+			}
+			
+			tY += -43/2 -43/2 -2;
 			tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
-			tBtn.add(new TextSprite({ text:"🔗Share", y:0 }));
-			tBtn.onClick.add(this._onCopyToClipboardClick, this);
+			let tText = tBtn.add(new TextSprite({ text:"Add Circle", fontSize:14, y:0 }));
+			tBtn.onClick.add(this._onAddCircleClick, this);
+			
+			tBtn = null;
 		}
-		
-		tY += -43/2 -43/2 -2;
-		tBtn = this.sidebarTrayBottom.add(new ButtonImageSprite({ asset:"black_button", y:tY }));
-		let tText = tBtn.add(new TextSprite({ text:"Add Circle", fontSize:14, y:0 }));
-		tBtn.onClick.add(this._onAddCircleClick, this);
-		
-		tBtn = null;
 		
 		// ConstantsApp.onResize.add(this.resizeFunction = (pOldWidth, pOldHeight)=>{
 		// 	console.log(tPos);
@@ -171,11 +176,15 @@ export default class MapScreen extends ScreenBase
 		this.map.x += (ConstantsApp.STAGE_WIDTH-pOldWidth)*0.5;
 		this.map.y += (ConstantsApp.STAGE_HEIGHT-pOldHeight)*0.5;
 		this._clampMapToSides();
-			
-		this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
-		this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
-		this.sidebarTrayTop.y = -ConstantsApp.STAGE_CENTER_Y;
-		this.sidebarTrayBottom.y = ConstantsApp.STAGE_CENTER_Y;
+		
+		if (ConstantsApp.OPTION_EMBED) {
+			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
+		} else {
+			this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
+			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
+			this.sidebarTrayTop.y = -ConstantsApp.STAGE_CENTER_Y;
+			this.sidebarTrayBottom.y = ConstantsApp.STAGE_CENTER_Y;
+		}
 	}
 	dispose() : void {
 		super.dispose();

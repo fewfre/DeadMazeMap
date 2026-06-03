@@ -1,8 +1,6 @@
-import MapScreen from "../screens/MapScreen";
 import Global from "../fewfre/Global";
-import Utils from "../fewfre/utils/Utils";
 import FewfEvent from "../fewfre/utils/FewfEvent";
-import Manifest from "./Manifest";
+import Utils from "../fewfre/utils/Utils";
 
 export default class ConstantsApp
 {
@@ -11,6 +9,7 @@ export default class ConstantsApp
 	static readonly SHORT_URL : string = "http://fewfre.com/dmmap";
 
 	static readonly OPTION_DEBUG : boolean = !!Utils.getUrlParameter("debug");
+	static readonly OPTION_EMBED : boolean = !!Utils.getUrlParameter("embed");
 	
 	static STAGE_WIDTH : number;// = canvas.width;
 	static STAGE_HEIGHT : number;// = canvas.height;
