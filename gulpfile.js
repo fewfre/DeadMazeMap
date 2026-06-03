@@ -21,7 +21,7 @@ function core() {
 }
 
 function copyImages() {
-	return gulp.src('images/*', { base: '', encoding: false })
+	return gulp.src('images/**/*', { base: 'images', encoding: false })
 		.pipe(gulp.dest('build/images'));
 }
 
