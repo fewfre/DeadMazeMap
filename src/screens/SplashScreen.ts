@@ -37,7 +37,7 @@ class SplashTitle extends TextSprite
 		
 		ctx.strokeStyle = grd;
 		ctx.miterLimit = 2;
-		ctx.lineJoin = 'circle';
+		ctx.lineJoin = 'round';
 		
 		// draw an outline, then filled
 		ctx.lineWidth = 7;

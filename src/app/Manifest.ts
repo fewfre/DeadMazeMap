@@ -14,16 +14,16 @@ export default class Manifest
 		// SPECIAL icons
 		lakeview_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/2.png",
 		// URBAN icons
-		sac_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/38.png",
-		bodega_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/45.png",
-		santa_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/46.png",
-		mazon_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/10.png",
-		mall_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/11.png",
+		sac_icon: "images/zone-icons/zone-icon-1-sacramento.png",
+		bodega_icon: "images/zone-icons/zone-icon-2-bodega.png",
+		santa_icon: "images/zone-icons/zone-icon-3-rosa.png",
+		mazon_icon: "images/zone-icons/zone-icon-4-college.png",
+		mall_icon: "images/zone-icons/zone-icon-5-mall.png",
 		// DESERT icons
-		walker_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/15.png",
-		museum_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/39.png",
-		highway_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/49.png",
-		mesa_icon: "https://www.transformice.com/images/x_deadmeat/x_interfaces/monde/zones/63.png",
+		walker_icon: "images/zone-icons/zone-icon-6-walker.png",
+		museum_icon: "images/zone-icons/zone-icon-7-museum.png",
+		highway_icon: "images/zone-icons/zone-icon-8-highway.png",
+		mesa_icon: "images/zone-icons/zone-icon-9-mesa.png",
 		// Maps
 		sac_map: Manifest.VIGNETTE_BASE+"/9/95/Sacramento_Suburbs_map.png/revision/latest/scale-to-width-down/10000?cb=20180225223817&t=.png",
 		bodega_map: Manifest.VIGNETTE_BASE+"/a/a4/Bodega_Bay_map.png/revision/latest/scale-to-width-down/10000?cb=20180506075130&t=.png",

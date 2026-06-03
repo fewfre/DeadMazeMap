@@ -4,11 +4,14 @@
 		"noImplicitAny": false,
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"target": "es5",
+		"target": "es6",
 		"lib": [
 			"es2015",
 			"dom"
-		]
+		],
+		"strictNullChecks": false,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": false
 	},
 	"exclude": [
 		"node_modules"
