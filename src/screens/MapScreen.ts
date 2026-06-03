@@ -124,8 +124,8 @@ export default class MapScreen extends ScreenBase
 		}
 		
 		if (ConstantsApp.OPTION_EMBED) {
-			this.sidebar = this.spriteManager.add(new FillSprite({ color:0, alpha:0.5, width:60, height:24, x:10, y:10, origin:0 }));
-			this.coords = this.spriteManager.add(new TextSprite({ text:"0, 0", fontSize:14, x:14, y:16, origin:0 }));
+			this.spriteManager.add(new FillSprite({ color:0, alpha:0.5, width:65, height:24, x:10, y:10, origin:0 }));
+			this.coords = this.spriteManager.add(new TextSprite({ text:"0, 0", fontSize:14, x:15, y:16, origin:0 }));
 		} else {
 			this.sidebar = this.spriteManager.add(new FillSprite({ color:"#EEE", width:100, height:ConstantsApp.STAGE_HEIGHT, x:100*0.5, y:ConstantsApp.STAGE_CENTER_Y }));
 			
@@ -177,9 +177,7 @@ export default class MapScreen extends ScreenBase
 		this.map.y += (ConstantsApp.STAGE_HEIGHT-pOldHeight)*0.5;
 		this._clampMapToSides();
 		
-		if (ConstantsApp.OPTION_EMBED) {
-			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
-		} else {
+		if (this.sidebar) {
 			this.sidebar.sizeY = ConstantsApp.STAGE_HEIGHT;
 			this.sidebar.y = ConstantsApp.STAGE_CENTER_Y;
 			this.sidebarTrayTop.y = -ConstantsApp.STAGE_CENTER_Y;
